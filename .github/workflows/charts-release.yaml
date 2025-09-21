@@ -1,7 +1,9 @@
 name: "Charts: Release"
 
-concurrency: helm-release
-
+concurrency:
+  group: helm-release
+  cancel-in-progress: true
+  
 on:
   workflow_dispatch:
     inputs:
