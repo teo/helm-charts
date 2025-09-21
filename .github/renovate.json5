@@ -1,9 +1,28 @@
 {
   extends: [
-    "github>teo/renovate-config:default-automerge"
+    "config:base",
+    ":enableRenovate",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separatePatchReleases",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all"
   ],
-  platform:     "github",
-  username:     "teo-bot[bot]",
-  gitAuthor:    "teo-bot[bot] <teo-bot[bot]@users.noreply.github.com>",
+  platform: "github",
+  username: "teo-bot[bot]",
+  gitAuthor: "teo-bot[bot] <teo-bot[bot]@users.noreply.github.com>",
   repositories: ["teo/helm-charts"],
+  packageRules: [
+    {
+      description: "Loose versioning for non-semver packages",
+      matchDatasources: ["docker"],
+      versioning: "loose"
+    },
+    {
+      description: "Automerge patch updates",
+      matchUpdateTypes: ["patch"],
+      automerge: true
+    }
+  ]
 }

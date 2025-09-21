@@ -27,11 +27,23 @@ on:
 jobs:
   renovate:
     name: Renovate
-    uses: teo/github-workflows/.github/workflows/run-renovate.yaml@main
-    with:
-      configurationFile: ".github/renovate.json5"
-      dryRun: ${{ inputs.dryRun || 'false' }}
-      renovateLogLevel: ${{ inputs.logLevel || 'debug' }}
-    secrets:
-      app_id: ${{ secrets.TEO_APP_ID }}
-      app_private_key: ${{ secrets.TEO_APP_PRIVATE_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get GitHub API token
+        id: get-app-token
+        uses: getsentry/action-github-app-token@v3
+        with:
+          app_id: ${{ secrets.TEO_APP_ID }}
+          private_key: ${{ secrets.TEO_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v40.1.7
+        with:
+          configurationFile: ".github/renovate.json5"
+          token: ${{ steps.get-app-token.outputs.token }}
+        env:
+          LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
+          RENOVATE_DRY_RUN: ${{ inputs.dryRun || 'false' }}
