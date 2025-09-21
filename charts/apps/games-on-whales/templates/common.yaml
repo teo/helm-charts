@@ -18,6 +18,10 @@ Security improvements applied:
 image:
   {{ .Values.sunshine.image | toYaml | nindent 2 }}
 
+{{- if .Values.runtimeClassName }}
+runtimeClassName: {{ .Values.runtimeClassName }}
+{{- end }}
+
 securityContext:
   runAsNonRoot: true
   runAsUser: 1000

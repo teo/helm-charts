@@ -43,6 +43,11 @@ gpu:
   # Set to "mesa" for AMD/Intel GPUs that use Mesa drivers
   type: "mesa"
 
+# -- Runtime class name for GPU acceleration
+# Leave empty to use default runtime. For NVIDIA GPUs, typically set to "nvidia"
+# @default -- ""
+runtimeClassName: ""
+
 sunshine:
   image:
     # -- sunshine image repository
