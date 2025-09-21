@@ -1,6 +1,6 @@
 # Welcome
 
-Welcome to the documentation for the [angelnu Helm charts](https://github.com/angelnu/helm-charts) project.
+Welcome to the documentation for the [teo Helm charts](https://github.com/teo/helm-charts) project.
 
 ## Getting started
 
@@ -11,10 +11,10 @@ Refer to Helm's [documentation](https://helm.sh/docs/) to get started.
 ## Installation
 
 ```sh
-helm repo add angelnu http://angelnu.github.io/helm-charts/
+helm repo add teo http://teo.github.io/helm-charts/
 ```
 
-You can then run `helm search repo angelnu` to search the charts.
+You can then run `helm search repo teo` to search the charts.
 
 ## Other usefull charts
 

@@ -1,9 +1,9 @@
 {
   extends: [
-    "github>angelnu/renovate-config:default-automerge"
+    "github>teo/renovate-config:default-automerge"
   ],
   platform:     "github",
-  username:     "angelnu-bot[bot]",
-  gitAuthor:    "angelnu-bot[bot] <115925344+angelnu-bot[bot]@users.noreply.github.com>",
-  repositories: ["angelnu/helm-charts"],
+  username:     "teo-bot[bot]",
+  gitAuthor:    "teo-bot[bot] <teo-bot[bot]@users.noreply.github.com>",
+  repositories: ["teo/helm-charts"],
 }

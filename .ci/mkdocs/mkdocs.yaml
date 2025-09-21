@@ -1,14 +1,14 @@
 ---
 
 # Project information
-site_name: angelnu | Helm charts | Docs
-site_description: Docs for the angelnu Helm charts repository
-site_author: angelnu
-site_url: https://angelnu.github.io/helm-charts/docs
+site_name: teo | Helm charts | Docs
+site_description: Docs for the teo Helm charts repository
+site_author: teo
+site_url: https://teo.github.io/helm-charts/docs
 
 # Repository
-repo_name: angelnu/helm-charts
-repo_url: https://github.com/angelnu/helm-charts
+repo_name: teo/helm-charts
+repo_url: https://github.com/teo/helm-charts
 edit_uri: ""
 
 # Configuration
@@ -55,7 +55,7 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/angelnu
+      link: https://github.com/teo
     - icon: fontawesome/brands/discord
       link: https://discord.gg/sTMX7Vh
 

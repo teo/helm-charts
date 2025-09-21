@@ -8,14 +8,13 @@ Streams graphic applications/games (retroarch, firefox, steam) runing on Kuberne
 
 **🎮 GPU Support**: Supports both NVIDIA (with Device Plugin) and Mesa/AMD/Intel GPUs. See [GPU-CONFIGURATION.md](./GPU-CONFIGURATION.md) for configuration details.
 
-**Homepage:** <https://github.com/k8s-at-home/charts/tree/master/charts/stable/games-on-whales>
+**Homepage:** <https://github.com/teo/helm-charts/tree/main/charts/apps/games-on-whales>
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| angelnu | <gits@angelnu.com> |  |
-| ABeltramo | <beltramo.ale@gmail.com> |  |
+| teo | <teo@kde.org> |  |
 
 ## Source Code
 

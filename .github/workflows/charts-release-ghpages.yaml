@@ -11,9 +11,9 @@ on:
         required: false
         type: string
     secrets:
-      ANGELNU_APP_ID:
+      TEO_APP_ID:
         required: true
-      ANGELNU_APP_PRIVATE_KEY:
+      TEO_APP_PRIVATE_KEY:
         required: true
 
 env:
@@ -28,8 +28,8 @@ jobs:
         id: get-app-token
         uses: getsentry/action-github-app-token@v3
         with:
-          app_id: ${{ secrets.ANGELNU_APP_ID }}
-          private_key: ${{ secrets.ANGELNU_APP_PRIVATE_KEY }}
+          app_id: ${{ secrets.TEO_APP_ID }}
+          private_key: ${{ secrets.TEO_APP_PRIVATE_KEY }}
 
       - name: Checkout charts branch
         uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
         shell: bash
         working-directory: dest
         run: |
-          helm repo index . --url https://angelnu.github.io/helm-charts/
+          helm repo index . --url https://teo.github.io/helm-charts/
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -81,9 +81,9 @@ jobs:
         with:
           repository: dest
           branch: gh-pages
-          commit_user_name: "angelnu-bot[bot]"
-          commit_user_email: 249196+angelnu-bot[bot]@users.noreply.github.com
-          commit_author: angelnu-bot[bot] <249196+angelnu-bot[bot]@users.noreply.github.com>
+          commit_user_name: "teo-bot[bot]"
+          commit_user_email: teo-bot[bot]@users.noreply.github.com
+          commit_author: teo-bot[bot] <teo-bot[bot]@users.noreply.github.com>
           file_pattern: 'index.yaml **/*.tgz'
           disable_globbing: true
 

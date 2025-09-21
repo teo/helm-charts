@@ -12,15 +12,13 @@ keywords:
   - pulse
   - stream
   - retroarch
-home: https://github.com/k8s-at-home/charts/tree/master/charts/stable/games-on-whales
-icon: https://raw.githubusercontent.com/angelnu/helm-charts/gh-pages/icons/gow-logo.png
+home: https://github.com/teo/helm-charts/tree/main/charts/apps/games-on-whales
+icon: https://raw.githubusercontent.com/teo/helm-charts/gh-pages/icons/gow-logo.png
 sources:
   - https://github.com/games-on-whales/gow
 maintainers:
-  - name: angelnu
-    email: gits@angelnu.com
-  - name: ABeltramo
-    email: beltramo.ale@gmail.com
+  - name: teo
+    email: teo@kde.org
 dependencies:
   - name: common
     repository: https://bjw-s.github.io/helm-charts
