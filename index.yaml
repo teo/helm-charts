@@ -1,4 +1,41 @@
 apiVersion: v1
-entries: {}
-generated: "2025-09-21T00:00:00Z"
-serverInfo: {}
+entries:
+  games-on-whales:
+  - annotations:
+      artifacthub.io/changes: |-
+        - kind: changed
+          description: |
+            **BREAKING**: Updated library version to 1.0.1.
+          links:
+            - name: Common library chart definition
+              url: https://github.com/bjw-s/helm-charts/blob/main/charts/library/common/Chart.yaml
+    apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-09-21T14:57:44.100906813+02:00"
+    dependencies:
+    - name: common
+      repository: https://bjw-s-labs.github.io/helm-charts
+      version: 1.5.1
+    description: Streams graphic applications/games (retroarch, firefox, steam) running
+      on Kubernetes
+    digest: 128398be62c228d50e3935e5629ef964417cfb170ca2c800ab6d85aedd61e126
+    home: https://github.com/teo/helm-charts/tree/main/charts/apps/games-on-whales
+    icon: https://raw.githubusercontent.com/teo/helm-charts/gh-pages/icons/gow-logo.png
+    keywords:
+    - games-on-whales
+    - steam
+    - X11
+    - pulse
+    - stream
+    - retroarch
+    kubeVersion: '>=1.19.0-0'
+    maintainers:
+    - email: teo@kde.org
+      name: teo
+    name: games-on-whales
+    sources:
+    - https://github.com/games-on-whales/gow
+    urls:
+    - https://teo.github.io/helm-charts/apps/games-on-whales-2.0.1.tgz
+    version: 2.0.1
+generated: "2025-09-21T14:57:44.097946151+02:00"
