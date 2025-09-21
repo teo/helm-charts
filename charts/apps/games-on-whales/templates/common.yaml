@@ -1,6 +1,17 @@
 {{/* Make sure all variables are set properly */}}
 {{- include "bjw-s.common.loader.init" . }}
 
+{{/* 
+Security improvements applied:
+- Removed privileged: true from all containers, using specific capabilities instead
+- Containers run as non-root user (UID 1000) with dropped capabilities
+- Removed hostNetwork: true, using emptyDir volumes for inter-container communication
+- Minimized host path mounts: only /dev/uinput (always) and /dev/dri (Mesa/AMD/Intel only)
+- Conditional /dev/dri mount: excluded for NVIDIA setups using Device Plugin + RuntimeClass
+- Removed unnecessary mounts: /run/udev, /var/log, host /tmp/.X11-unix
+- Specific device access instead of broad privileged access
+*/}}
+
 {{/* Append the hardcoded settings */}}
 {{- define "games-on-whales.harcodedValues" -}}
 
@@ -8,7 +19,14 @@ image:
   {{ .Values.sunshine.image | toYaml | nindent 2 }}
 
 securityContext:
-  privileged: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  capabilities:
+    add:
+      - SYS_ADMIN  # Required for uinput device creation (always needed)
+    drop:
+      - ALL
 
 {{- if .Values.graphic_resources }}
 resources:
@@ -24,7 +42,7 @@ env:
   PULSE_SERVER: /tmp/pulse/pulse-socket
   SUNSHINE_PASS: {{ .Values.sunshine.password }}
   SUNSHINE_USER: {{ .Values.sunshine.user }}
-  GOW_REQUIRED_DEVICES: /dev/uinput /dev/input/event* /dev/dri/*
+  GOW_REQUIRED_DEVICES: /dev/uinput
   XDG_RUNTIME_DIR: /tmp/.X11-unix
   NVIDIA_DRIVER_CAPABILITIES: utility,video,graphics,display
   NVIDIA_VISIBLE_DEVICES: all
@@ -36,6 +54,13 @@ initContainers:
   mkhomeretrodirs:
     image: {{.Values.mkhomeretrodirs.image.repository }}:{{ .Values.mkhomeretrodirs.image.tag }}
     imagePullPolicy: {{ .Values.mkhomeretrodirs.image.pullPolicy }}
+    securityContext:
+      runAsUser: 0  # Need root to chown, but only in init container
+      capabilities:
+        add:
+          - CHOWN
+        drop:
+          - ALL
     command:
     - sh
     - -c
@@ -51,7 +76,16 @@ additionalContainers:
     image: {{.Values.xorg.image.repository }}:{{ .Values.xorg.image.tag }}
     imagePullPolicy: {{ .Values.xorg.image.pullPolicy }}
     securityContext:
-      privileged: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        {{- if ne .Values.gpu.type "nvidia" }}
+        add:
+          - SYS_ADMIN  # Required for DRI device access (Mesa/AMD/Intel only)
+        {{- end }}
+        drop:
+          - ALL
     {{- if .Values.graphic_resources }}
     resources:
       requests:
@@ -71,19 +105,24 @@ additionalContainers:
     - name: NVIDIA_VISIBLE_DEVICES
       value: all
     volumeMounts:
-    - name: dev-input
-      mountPath: /dev/input
-      readOnly: true
-    - name: udev
-      mountPath: /run/udev
-      readOnly: true
+    - name: dev-uinput
+      mountPath: /dev/uinput
+    {{- if ne .Values.gpu.type "nvidia" }}
+    - name: dev-dri
+      mountPath: /dev/dri
+    {{- end }}
     - name: xorg
       mountPath: /tmp/.X11-unix
-    - name: var-log
-      mountPath: /var/log
   pulseaudio:
     image: {{.Values.pulseaudio.image.repository }}:{{ .Values.pulseaudio.image.tag }}
     imagePullPolicy: {{ .Values.pulseaudio.image.pullPolicy }}
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        drop:
+          - ALL
     volumeMounts:
     - name: audio-socket
       mountPath: /tmp/pulse
@@ -94,7 +133,16 @@ additionalContainers:
     image: {{.Values.retroarch.image.repository }}:{{ .Values.retroarch.image.tag }}
     imagePullPolicy: {{ .Values.retroarch.image.pullPolicy }}
     securityContext:
-      privileged: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        {{- if ne .Values.gpu.type "nvidia" }}
+        add:
+          - SYS_ADMIN  # Required for DRI device access (Mesa/AMD/Intel only)
+        {{- end }}
+        drop:
+          - ALL
     {{- if .Values.graphic_resources }}
     resources:
       requests:
@@ -110,7 +158,7 @@ additionalContainers:
     - name: PULSE_SERVER
       value: "/tmp/pulse/pulse-socket"
     - name: GOW_REQUIRED_DEVICES
-      value: /dev/uinput /dev/input/event* /dev/dri/* /dev/snd/*
+      value: /dev/uinput
     - name: NVIDIA_DRIVER_CAPABILITIES
       value: all
     - name: NVIDIA_VISIBLE_DEVICES
@@ -118,12 +166,12 @@ additionalContainers:
     volumeMounts:
     - name: audio-socket
       mountPath: /tmp/pulse
-    - name: dev-input
-      mountPath: /dev/input
-      readOnly: true
-    - name: udev
-      mountPath: /run/udev
-      readOnly: true
+    - name: dev-uinput
+      mountPath: /dev/uinput
+    {{- if ne .Values.gpu.type "nvidia" }}
+    - name: dev-dri
+      mountPath: /dev/dri
+    {{- end }}
     - name: xorg
       mountPath: /tmp/.X11-unix
     # Default 64MB not enough for some emulators - https://github.com/libretro/dolphin/issues/222
@@ -142,7 +190,14 @@ additionalContainers:
     image: {{.Values.steam.image.repository }}:{{ .Values.steam.image.tag }}
     imagePullPolicy: {{ .Values.steam.image.pullPolicy }}
     securityContext:
-      privileged: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        add:
+          - SYS_ADMIN  # Required for bubblewrap sandboxing (and DRI if non-NVIDIA)
+        drop:
+          - ALL
     {{- if .Values.graphic_resources }}
     resources:
       requests:
@@ -164,12 +219,12 @@ additionalContainers:
     volumeMounts:
     - name: audio-socket
       mountPath: /tmp/pulse
-    - name: dev-input
-      mountPath: /dev/input
-      readOnly: true
-    - name: udev
-      mountPath: /run/udev
-      readOnly: true
+    - name: dev-uinput
+      mountPath: /dev/uinput
+    {{- if ne .Values.gpu.type "nvidia" }}
+    - name: dev-dri
+      mountPath: /dev/dri
+    {{- end }}
     - name: xorg
       mountPath: /tmp/.X11-unix
     {{- if .Values.persistence.home.enabled }}
@@ -187,6 +242,13 @@ additionalContainers:
   firefox:
     image: {{.Values.firefox.image.repository }}:{{ .Values.firefox.image.tag }}
     imagePullPolicy: {{ .Values.firefox.image.pullPolicy }}
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      capabilities:
+        drop:
+          - ALL
     env:
     - name: DISPLAY
       value: {{ .Values.xorg.display | quote }}
@@ -277,39 +339,40 @@ service:
     externalTrafficPolicy: Local
     {{- end }}
 
-# Required for udev to work
-hostNetwork: true
+# Network isolation - no host network required
+# Audio communication happens via Unix sockets
 
 persistence:
-  dev-input:
+  # Specific input devices only (not entire /dev/input)
+  dev-uinput:
     enabled: true
     type: hostPath
-    mountPath: /dev/input
-    hostPath: /dev/input
-  udev:
+    mountPath: /dev/uinput
+    hostPath: /dev/uinput
+  # GPU devices for hardware acceleration (only for Mesa/AMD/Intel, not NVIDIA)
+  {{- if ne .Values.gpu.type "nvidia" }}
+  dev-dri:
     enabled: true
     type: hostPath
-    mountPath: /run/udev
-    hostPath: /run/udev
+    mountPath: /dev/dri
+    hostPath: /dev/dri
+  {{- end }}
+  # X11 socket for inter-container communication
   xorg:
     enabled: true
-    type: hostPath
+    type: emptyDir
     mountPath: /tmp/.X11-unix
-    hostPath: /tmp/.X11-unix
-  var-log:
-    enabled: true
-    type: hostPath
-    mountPath: /var/log
-    hostPath: /var/log
+  # Audio socket for PulseAudio communication  
   audio-socket:
     enabled: true
-    type: hostPath
+    type: emptyDir
     mountPath: /tmp/pulse
-    hostPath: /tmp/pulse
+  # Shared memory for applications requiring larger shared memory
   dshm:
     enabled: true
     type: emptyDir
     medium: Memory
+  # PulseAudio configuration
   pulse-conf:
     enabled: true
     type: custom

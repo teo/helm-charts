@@ -36,6 +36,13 @@ persistence:
 # See Custom configuration section in the Readme
 graphic_resources:
 
+# GPU configuration
+gpu:
+  # -- GPU type: nvidia (uses device plugin + runtime class) or mesa (uses /dev/dri mount)
+  # Set to "nvidia" when using NVIDIA Device Plugin and NVIDIA RuntimeClass
+  # Set to "mesa" for AMD/Intel GPUs that use Mesa drivers
+  type: "mesa"
+
 sunshine:
   image:
     # -- sunshine image repository

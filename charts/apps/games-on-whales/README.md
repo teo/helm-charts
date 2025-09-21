@@ -4,6 +4,10 @@
 
 Streams graphic applications/games (retroarch, firefox, steam) runing on Kubernetes
 
+**⚠️ Security Notice**: This chart has been significantly hardened with proper security contexts, non-root users, and minimal privileges. See [SECURITY-IMPROVEMENTS.md](./SECURITY-IMPROVEMENTS.md) for details.
+
+**🎮 GPU Support**: Supports both NVIDIA (with Device Plugin) and Mesa/AMD/Intel GPUs. See [GPU-CONFIGURATION.md](./GPU-CONFIGURATION.md) for configuration details.
+
 **Homepage:** <https://github.com/k8s-at-home/charts/tree/master/charts/stable/games-on-whales>
 
 ## Maintainers
