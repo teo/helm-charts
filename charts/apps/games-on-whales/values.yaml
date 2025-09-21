@@ -53,7 +53,7 @@ sunshine:
     pullPolicy: IfNotPresent
   # -- sunshine web interface user
   user: admin
-  # -- sunshine web interface pasword
+  # -- sunshine web interface password
   password: admin
   # -- sunshine log level
   logLevel: info

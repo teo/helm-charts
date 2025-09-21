@@ -2,7 +2,7 @@
 
 ![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
-Streams graphic applications/games (retroarch, firefox, steam) runing on Kubernetes
+Streams graphic applications/games (retroarch, firefox, steam) running on Kubernetes
 
 **⚠️ Security Notice**: This chart has been significantly hardened with proper security contexts, non-root users, and minimal privileges. See [SECURITY-IMPROVEMENTS.md](./SECURITY-IMPROVEMENTS.md) for details.
 
@@ -26,7 +26,7 @@ Kubernetes: `>=1.19.0-0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://bjw-s.github.io/helm-charts | common | 1.5.1 |
+| https://bjw-s-labs.github.io/helm-charts | common | 1.5.1 |
 
 ## Values
 
@@ -67,7 +67,7 @@ Kubernetes: `>=1.19.0-0`
 | sunshine.image.repository | string | `"ghcr.io/games-on-whales/sunshine"` | sunshine image repository |
 | sunshine.image.tag | string | `"1.0.0"` | sunshine image tag |
 | sunshine.logLevel | string | `"info"` | sunshine log level |
-| sunshine.password | string | `"admin"` | sunshine web interface pasword |
+| sunshine.password | string | `"admin"` | sunshine web interface password |
 | sunshine.user | string | `"admin"` | sunshine web interface user |
 | xorg.display | string | `":99"` | xorg display ID |
 | xorg.image.pullPolicy | string | `"IfNotPresent"` | xorg image pull policy |

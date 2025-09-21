@@ -16,10 +16,12 @@ helm repo add teo http://teo.github.io/helm-charts/
 
 You can then run `helm search repo teo` to search the charts.
 
-## Other usefull charts
+## Other useful charts
 
-- [app-template](https://bjw-s.github.io/helm-charts/docs/app-template/introduction/)
-- [common-library](https://bjw-s.github.io/helm-charts/docs/common-library/introduction/)
+If you are migrating from an alternative chart like TrueCharts, you should be able to use the charts from this repository with minimal changes.
+
+- [app-template](https://bjw-s-labs.github.io/helm-charts/docs/app-template/introduction/)
+- [common-library](https://bjw-s-labs.github.io/helm-charts/docs/common-library/introduction/)
 
 ## How do I find people running Kubernetes at home?
 

@@ -12,6 +12,10 @@ based in [bjw-s](https://github.com/bjw-s/helm-charts) work.
 This repo is not intended to be a replacement for any of the large collections
 of Helm charts that are out there.
 
+## Credits
+
+This repository was originally maintained by [angelnu](https://github.com/angelnu) and [ABeltramo](https://github.com/ABeltramo), whose excellent work provided the foundation for these charts.
+
 ## Installation
 
 The Helm repository can be installed as follows:
